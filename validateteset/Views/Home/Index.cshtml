@@ -66,6 +66,7 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
+<input type="button" onclick="validateUpdate()" value="update" />
 <blockquote class="bg-info">
     <h4><strong>Notice</strong></h4>
     <ol>
@@ -87,7 +88,7 @@
                 custom: {
                     equals: function ($el) {
                         var ispass;
-                        $.ajax({
+                        @*$.ajax({
                             type: 'Post',
                             data: {
                                 name:$el.val()
@@ -97,14 +98,35 @@
                             success: function (result) {
                                 ispass = result;
                             }
-                        })
+                        })*@
+                        ispass = check($el.val());
                         if (ispass == false) {
                             return 'Do you know hwo to spell "Ray?"'
-                            
+
                         }
                     }
                 }
-            })
+            });
         })
+
+        function validateUpdate() {
+            $('#testfrom').validator('update');
+        }
+
+        function check(id) {
+            var tt;
+            $.ajax({
+                type: 'Post',
+                data: {
+                    name: id
+                },
+                url: '@Url.Action("ValidateName","Home")',
+                async: false,
+                success: function (result) {                   
+                    tt = result;
+                }
+            })
+            return tt;
+        }
     </script>
 }

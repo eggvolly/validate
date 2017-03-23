@@ -1,7 +1,62 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿<form id="myform" class="form" role="form">
+    <div class="form-group">
+        <label class="control-label">請輸入姓名</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="輸入一個名字" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">請輸入Ray</label>
+        <input type="text" id="nickname" name="nickname" class="form-control" placeholder="輸入一個名字" />
+    </div>
+    <div class="form-group">
+        <button type="submit" id="formsubmit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
 
-<p>Use this area to provide additional information.</p>
+@section scripts{
+    <script src="~/Scripts/jquery.validate.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.validator.addMethod('checkid', CheckId, "安安輸入Ray才能pass喔!")
+            $('#formsubmit').on('click', function () {
+                $('#myform').validate({
+                    rules: {
+                        //element's name : rules
+                        name: {
+                            required: true,
+                            minlength: 2,                           
+                        },
+                        nickname: {
+                            required: true,
+                            minlength: 2,
+                            checkid: true
+                        }
+                    },
+                    messages: {
+                        //element's name : { rule : msg}
+                        name: {
+                            required: "這個必須填!",
+                            minlength: "有人名字只有一個字嘛!"
+                        }
+                    }
+                });
+            })
+        })
+
+        function CheckId() {
+            var checkresult;
+            $.ajax({
+                type: 'post',
+                data: {
+                    name: $('#nickname').val()
+                },
+                url: '@Url.Action("ValidateName", "Home")',
+                async: false,
+                success: function (result) {
+                    checkresult = result;
+                }
+            })
+            console.log(checkresult);
+            return checkresult;
+        }
+    </script>
+}
