@@ -118,6 +118,8 @@
 
         })
 
+        $('#testfrom').on('invalid.bs.validator', function () { alert("aa") })
+
         function validateUpdate() {
             $('#testfrom').validator('update');
         }
