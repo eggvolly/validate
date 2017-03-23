@@ -1,14 +1,16 @@
 ﻿<h1>官方範例</h1>
-<form data-toggle="validator" role="form" style="width:50%">
-    <div class="form-group">
+<form id="testfrom" data-toggle="validator" role="form" style="width:50%">
+    <div class="form-group has-feedback">
         <label for="inputName" class="control-label">Name</label>
-        <input type="text" class="form-control" id="inputName" placeholder="Cina Saffary" required>
+        <input type="text" class="form-control" id="inputName" placeholder="Cina Saffary" data-required-error="快填!" data-minlength-error="at least 3 words" data-minlength="3" required>
+        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+        <div class="help-block with-errors"></div>
     </div>
     <div class="form-group has-feedback">
         <label for="inputTwitter" class="control-label">Twitter</label>
         <div class="input-group">
             <span class="input-group-addon">@@</span>
-            <input type="text" pattern="^[_A-z0-9]{1,}$" maxlength="15" class="form-control" id="inputTwitter" placeholder="1000hz" required>
+            <input type="text" data-pattern-error="不要亂輸入吧!" pattern="^[_A-z0-9]{1,}$" maxlength="15" class="form-control" id="inputTwitter" placeholder="1000hz" required>
         </div>
         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
         <div class="help-block with-errors">Hey look, this one has feedback icons!</div>
@@ -26,7 +28,7 @@
                 <div class="help-block">Minimum of 6 characters</div>
             </div>
             <div class="form-group col-sm-6">
-                <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" placeholder="Confirm" required>
+                <input type="password" class="form-control" id="inputPasswordConfirm" data-match="#inputPassword" data-required-error="快填!" data-match-error="Whoops, these don't match" placeholder="Confirm" required>
                 <div class="help-block with-errors"></div>
             </div>
         </div>
@@ -54,11 +56,55 @@
             <div class="help-block with-errors"></div>
         </div>
     </div>
+    <div class="form-group has-feedback">
+        <label>請輸入Ray</label>
+        <input type="text" id="test" class="form-control" required data-equals="" />
+        <span class="glyphicon form-control-feedback"></span>
+        <div class="help-block with-errors"></div>
+    </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
+<blockquote class="bg-info">
+    <h4><strong>Notice</strong></h4>
+    <ol>
+        <li>透過在input元素中，加入需求，建立驗證內容</li>
+        <li>透過form-group中，加入一個元素(div)，然後加入.help-block，提供Bootstrap Validate進行error message置換</li>
+        <li>在input元素中加入<code>data-(validate)-error="custom message"</code></li>
+        <li>error順序:data-*-error > data-error</li>
+        <li>在驗證元素的外層加上<code>.has-feedback</code>，讓元素透過bootstrap validate進行外框顏色處理</li>
+        <li>在<code>.form-group</code>中加入<code>span</code>，自動做class調整(顯示成功或失敗的圖片)</li>
+    </ol>
+</blockquote>
 
 @section scripts{
     <script type="text/javascript" src="~/Scripts/validator.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#testfrom').validator({
+                custom: {
+                    equals: function ($el) {
+                        var ispass;
+                        $.ajax({
+                            type: 'Post',
+                            data: {
+                                name:$el.val()
+                            },
+                            url: '@Url.Action("ValidateName","Home")',
+                            async: false ,
+                            success: function (result) {
+                                ispass = result;
+                            }
+                        })
+                        if (ispass == false) {
+                            return 'Do you know hwo to spell "Ray?"'
+                            
+                        }
+                    }
+                }
+            })
+        })
+    </script>
 }

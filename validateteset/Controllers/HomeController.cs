@@ -13,6 +13,18 @@ namespace validateteset.Controllers
             return View();
         }
 
+        public JsonResult ValidateName(string name)
+        {
+            if(!String.Equals(name,"Ray"))
+            {
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
