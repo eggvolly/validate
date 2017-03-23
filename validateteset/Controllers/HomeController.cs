@@ -15,7 +15,7 @@ namespace validateteset.Controllers
 
         public JsonResult ValidateName(string name)
         {
-            if(!String.Equals(name,"Ray"))
+            if (!String.Equals(name, "Ray"))
             {
                 return Json(false);
             }
@@ -30,6 +30,14 @@ namespace validateteset.Controllers
             ViewBag.Message = "Your application description page.";
 
             return View();
+        }
+
+        public ActionResult AboutInfo(string name, string nickname)
+        {
+            ViewBag.Name = name;
+            ViewBag.NickName = nickname;
+
+            return PartialView("_AboutInfo");
         }
 
         public ActionResult Contact()
