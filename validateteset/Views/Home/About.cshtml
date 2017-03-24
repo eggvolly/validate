@@ -1,13 +1,20 @@
-﻿<form id="myform" class="form" role="form" >
-    <div class="form-group has-feedback">
+﻿<style>
+    .errormsg{
+        color:red;
+        font-size:12px;
+    }
+</style>
+
+<form id="myform" class="form" role="form" >
+    <section class="form-group has-feedback">
         <label class="control-label">請輸入姓名</label>
-        <input type="text" id="name" name="name" class="form-control" placeholder="輸入一個名字" />
+        <input type="text" id="name" name="name" class="" placeholder="輸入一個名字" />
         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
         <div class="help-block with-errors"></div>
-    </div>
+    </section>
     <div class="form-group">
         <label class="control-label">請輸入Ray</label>
-        <input type="text" id="nickname" name="nickname" class="form-control" placeholder="輸入一個名字" />
+        <input type="text" id="nickname" name="nickname" class="form-control classname" placeholder="輸入一個名字" />
     </div>
     <div class="form-group">
         <button type="submit" id="formsubmit" class="btn btn-primary">Submit</button>
@@ -17,17 +24,18 @@
 <div id="resultpanel">
 
 </div>
-
 @section scripts{
     <script src="~/Scripts/jquery.validate.js" type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $.validator.addMethod('checkid', CheckId, "安安輸入Ray才能pass喔!");
+            $.validator.addClassRules({ 'classname': {  rangelength:[2,10] } })
             //$.validator.setDefaults({
             //    submitHandler: AppendNewInfo()
             //})
             $('#formsubmit').on('click', function () {
                 $('#myform').validate({
+                    errorClass: "errormsg",
                     rules: {
                         //element's name : rules
                         name: {
@@ -37,7 +45,8 @@
                         nickname: {
                             required: true,
                             minlength: 2,
-                            checkid: true
+
+                            //checkid: true
                         }
                     },
                     messages: {
@@ -47,8 +56,27 @@
                             minlength: "有人名字只有一個字嘛!"
                         },
                         nickname: {
-                            required: "想個綽號吧!"
+                            required: "想個綽號吧!",
+                            rangelength:"只能輸入2-10喔!"
                         }
+                    },
+                    //highlight: function (element, errorClass, validClass) {
+                    //    var errormsg = $(element).parent().find('.errormsg').text();
+                    //    if (errormsg == '') {
+                    //        console.log('123');
+                    //        $(element).tooltip('destroy');
+                    //    }
+                    //    else {
+                    //        //$(element).attr('title', $(element).parent().find('.hidden').text());
+                    //        $(element).attr('title', 'here have some mistakes!!');
+                    //        $(element).tooltip('show');
+                    //    }
+
+                    //},
+                    errorPlacement: function(error, element){
+                        $(element).attr('data-original-title', $(error).text());
+                        //$(element).parent().append(error);
+                        $(element).tooltip('show');
                     },
                     submitHandler: function(){
                         AppendNewInfo();

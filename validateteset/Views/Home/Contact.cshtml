@@ -1,17 +1,54 @@
-﻿@{
-    ViewBag.Title = "Contact";
+﻿
+<form id="booform" role="form">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group form-inline has-feedback">
+                <label class="control-label">阿BerTTest</label>
+                <input class="form-control" type="text" placeholder="請輸入" data-required-error="請填入密碼" data-passwordrule data-minlength="6" required />
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group form-inline has-feedback">
+        <label class="control-label">阿BerTTest</label>
+        <input class="form-control" type="text" placeholder="請輸入" data-required-error="請填入密碼" data-passwordrule data-minlength="6" required />
+        <span class="glyphicon form-control-feedback"></span>
+        <div class="help-block with-errors"></div>
+    </div>
+    <div class="form-group form-inline has-feedback">
+        <label class="control-label">阿BerTTest</label>
+        <input class="form-control" type="text" placeholder="請輸入" data-required-error="請填入密碼" data-passwordrule data-minlength="6" required />
+        <span class="glyphicon form-control-feedback"></span>
+        <div class="help-block with-errors"></div>
+    </div>
+    @*<div class="form-group col-sm-6">
+            <input type="password" data-minlength="6" class="form-control" id="inputPassword" placeholder="密碼" data-required-error="請填入密碼" data-passwordrule="" required>
+            <div class="help-block with-errors">至少六碼</div>
+        </div>*@
+</form>
+
+
+@section Scripts{
+    <script type="text/javascript" src="~/Scripts/validator.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#booform').validator({
+                custom: {
+                    passwordrule: function ($item) {
+                        var password = $item.val();
+                        var result = false;
+
+                        var passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
+                        if (passwordRule.test(password)) {
+                            result = true;
+                        }
+                        if (!result) {
+                            return "密碼格式有誤";
+                        }
+                    },
+                }
+            });
+        });
+    </script>
+
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
-
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
-
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
